@@ -9,6 +9,11 @@
   "author": "Muhammad Azizol Aminuddin",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-typescript": "^7.10.1",
+    "@types/jest": "^26.0.0",
+    "babel-jest": "^26.0.1",
     "jest": "^26.0.1",
     "serverless": "^1.73.1",
     "serverless-plugin-typescript": "^1.1.9",
