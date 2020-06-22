@@ -1,0 +1,300 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is Xendit Notification Trial API Documentation
+  version: "1.0.0"
+  title: Xendit Notification
+  contact:
+    email: bjoe88@gmail.com
+tags:
+  - name: webhook
+    description: Everything about webhook
+  - name: notification
+    description: Everything about notification
+  - name: notification-type
+    description: Everything about notification-type
+  - name: customer
+    description: Everything about endpoint for customer service
+  - name: internal
+    description: Everything about endpoint for internal service
+paths:
+  /webhooks:
+    get:
+      tags:
+        - webhook
+        - customer
+      summary: Get all webhooks for this Customer
+      operationId: getWebhook
+      parameters:
+        - name: user_id
+          in: query
+          description: The user ID 
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookCreated'
+    post:
+      tags:
+        - webhook
+        - customer
+      summary: Create a new webhook for this customer and notification type
+      operationId: addWebhook
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookCreated'
+      requestBody:
+        $ref: '#/components/requestBodies/Webhook'
+  /webhooks/{webhookId}:
+    get:
+      tags:
+        - webhook
+        - customer
+      summary: Get webhook for this Customer by specific ID
+      operationId: getWebhookById
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookCreated'
+  /webhooks/test:
+    post:
+      tags:
+        - webhook
+        - customer
+      summary: Test sending notification to this webhook
+      operationId: testWebhook
+      responses:
+        '200':
+          description: Webhook test call result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResultTest'
+      requestBody:
+        $ref: '#/components/requestBodies/Webhook'
+  /notification-types:
+    get:
+      tags:
+        - notification-type
+        - customer
+        - internal
+      summary: Get all the notification types
+      operationId: getNotificationType
+      responses:
+        '200':
+          description: Get all notification types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationTypeCreated'
+    post:
+      tags:
+        - notification-type
+        - internal
+      summary: Create a new notification type
+      operationId: addNotificationType
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTypeCreated'
+      requestBody:
+        $ref: '#/components/requestBodies/NotificationType'                                    
+  /notifications:
+    get:
+      tags:
+        - notification
+        - customer
+      summary: Get all the notification for this customer
+      operationId: getNotification
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+    post:
+      tags:
+        - notification
+        - internal
+      summary: Create a new notification for this customer and notification type
+      operationId: addNotification
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+      requestBody:
+        $ref: '#/components/requestBodies/Notification'                  
+  /notifications/{notificationId}/retry:
+    post:
+      tags:
+        - notification
+        - customer
+      summary: Retry this notification regardless of the status.
+      operationId: retryNotification
+      responses:
+        '200':
+          description: Webhook Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResultTest'     
+components:
+  schemas:
+    Webhook:
+      type: object
+      required:
+        - url
+        - userId
+        - notificationTypeId
+      properties:
+        url:
+          type: string
+          example: www.xendit.com/trial/webhook-call
+        token:
+          type: string
+          description: Authenticate Key when webhook url is been call. If not given, server will generate the token for this webhook.
+          example: asf2-zxc2-4r2s-cvs3
+        notificationTypeId:
+          type: string
+          description: The notification type this webhook will listen to
+          example: 2sf2-z3c2-4r2s-cvs3
+        userId:
+          type: integer
+          description: The user id for this customer
+          example: 2
+    WebhookCreated:
+      type: object
+      properties:
+        id:
+          type: string
+          example: cjsd-zxvs-s24d-sdfx
+        url:
+          type: string
+          example: www.xendit.com/trial/webhook-call
+        notificationTypeId:
+          type: integer
+          description: Notification type id
+          example: 2sf2-z3c2-4r2s-cvs3
+        token:
+          type: string
+          description: Authenticate Key when webhook url is been call. If not given, server will generate the token for this webhook.
+          example: asf2-zxc2-4r2s-cvs3
+        userId:
+          type: integer
+          description: The user id for this customer
+          example: 2
+    WebhookResultTest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Fake idempotent id 
+          example: cjsd-zxvs-s24d-sdfx
+        status:
+          type: string
+          example: 404
+        response:
+          type: string
+          example: "404, Page not found"
+    NotificationTypeCreated:
+      type: object
+      required:
+       - name
+      properties:
+        id:
+          type: string
+          example: cjsd-zxvs-s24d-sdfx
+        name:
+          type: string
+          example: Payment success
+    NotificationType:
+      type: object
+      required:
+       - name
+      properties:
+        name:
+          type: string
+          example: Payment success
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          example: cjsd-zxvs-s24d-sdfx
+        modifyDateTime:
+          type: string
+          example: 1592808712
+        notificationTypeId:
+          type: string
+          example: asf2-zxc2-4r2s-cvs3
+        webhookId:
+          type: string
+          example: asf2-zxc2-4r2s-cvs3
+        status:
+          type: string
+          example: Pending
+        createdDate:
+          type: string
+          example: 1592808712
+    NotificationCreate:
+      type: object
+      required:
+        - url
+        - type
+      properties:
+        id:
+          type: string
+          example: cjsd-zxvs-s24d-sdfx
+        notificationTypeId:
+          type: string
+          example: asf2-zxc2-4r2s-cvs3
+        userId:
+          type: string
+          example: asf2-zxc2-4r2s-cvs3        
+  requestBodies:
+    Webhook:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Webhook'
+      description: Webhook object that needs to be added
+      required: true
+    Notification:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationCreate'
+      description: Notification object that needs to be added
+      required: true
+    NotificationType:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationType'
+      description: Notification type object that needs to be added
+      required: true      
