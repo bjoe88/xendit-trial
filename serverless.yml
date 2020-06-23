@@ -19,21 +19,40 @@ provider:
 functions:
   create-notification-type:
     handler: src/controller/notificationType.createNotificationType
-    memorySize: 
     description: Create notification types.
+    memorySize: 128
     events:
       - http:
           path: notifications-types
           method: post
   get-notification-type:
     handler: src/controller/notificationType.getNotificationTypes
-    memorySize: 
-    description: Create notification types.
+    description: get notification types.
+    memorySize: 128
     events:
       - http:
           path: notifications-types
           method: get
-
+  create-webhook:
+    handler: src/controller/webhook.createWebhook
+    description: Create webhook.
+    memorySize: 128
+    events:
+      - http:
+          path: webhook
+          method: post
+  get-user-webhook:
+    handler: src/controller/webhook.getUserWebhook
+    description: Get user webhook.
+    memorySize: 128
+    events:
+      - http:
+          path: webhook
+          method: get
+          request:
+            parameters:
+              querystrings:
+                user_id: true
 resources: # CloudFormation template syntax from here on.
   Resources:
     notificationsTable:

@@ -44,7 +44,6 @@ export async function getNotificationTypes() {
         }
     }
     let result = await dynamoDb.query(params).promise();
-    console.log(result);
     return result.Items?.map((ele) => {
         return toDisplay(ele as Notification);
     })
