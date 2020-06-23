@@ -3,9 +3,19 @@ service: xendit-trial
 plugins:
   - serverless-plugin-typescript
 
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  myEnvironment:
+    REGIONENV:
+      prod: "ap-southeast-2"
+      dev: "us-east-1"
+
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    REGIONENV: ${self:custom.myEnvironment.REGIONENV.${self:custom.myStage}}
+    STAGEENV: ${self:custom.myStage}
 
   iamRoleStatements:
     - Effect: Allow
@@ -14,6 +24,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
+        - lambda:InvokeFunction 
       Resource: "*"
 
 functions:
@@ -53,6 +64,19 @@ functions:
             parameters:
               querystrings:
                 user_id: true
+  user-test-webhook:
+    handler: src/controller/webhook.userTestWebhook
+    description: Get user webhook.
+    memorySize: 128
+    events:
+      - http:
+          path: webhook/test
+          method: post
+  webhook-caller:
+    handler: src/controller/webhook.webhookCaller
+    description: Get user webhook.
+    memorySize: 128
+
 resources: # CloudFormation template syntax from here on.
   Resources:
     notificationsTable:
