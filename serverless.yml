@@ -18,13 +18,21 @@ provider:
 
 functions:
   create-notification-type:
-    handler: src/controller/notification.createNotificationType
+    handler: src/controller/notificationType.createNotificationType
     memorySize: 
     description: Create notification types.
     events:
       - http:
-          path: notifications
+          path: notifications-types
           method: post
+  get-notification-type:
+    handler: src/controller/notificationType.getNotificationTypes
+    memorySize: 
+    description: Create notification types.
+    events:
+      - http:
+          path: notifications-types
+          method: get
 
 resources: # CloudFormation template syntax from here on.
   Resources:
