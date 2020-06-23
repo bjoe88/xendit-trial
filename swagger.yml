@@ -232,14 +232,21 @@ components:
         name:
           type: string
           example: Payment success
+        dummyPayload:
+          type: string
+          example: '{"Status":"success","Amount":100}'
     NotificationType:
       type: object
       required:
        - name
+       - dummyPayload
       properties:
         name:
           type: string
           example: Payment success
+        dummyPayload:
+          type: string
+          example: '{"Status":"success","Amount":100}'
     Notification:
       type: object
       properties:

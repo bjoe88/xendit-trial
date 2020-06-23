@@ -1,0 +1,11 @@
+{
+    "dev":{
+        "notificationTable": "notification-table-dev"
+    },
+    "stg":{
+        "notificationTable": "notification-table-stg"
+    },
+    "prod":{
+        "notificationTable": "notification-table-prod"
+    }
+}
