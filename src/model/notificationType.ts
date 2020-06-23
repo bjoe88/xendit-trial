@@ -49,6 +49,23 @@ export async function getNotificationTypes() {
     })
 };
 
+export async function getNotificationTypeById(id: string): Promise<NotificationDisplay | undefined> {
+    var params = {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: "#pk=:pk",
+        ExpressionAttributeValues: {
+            ":pk": id
+        },
+        ExpressionAttributeNames: {
+            "#pk": "pk"
+        }
+    }
+    let result = await dynamoDb.query(params).promise();
+    let data = result.Items?.map((ele) => {
+        return toDisplay(ele as Notification);
+    })
+    return data?.shift()
+};
 const notificationData = (name: string, dummyPayload: string): Notification => {
     const timestamp = new Date().getTime();
     return {

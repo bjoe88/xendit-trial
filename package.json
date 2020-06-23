@@ -14,6 +14,7 @@
     "@babel/preset-typescript": "^7.10.1",
     "@types/jest": "^26.0.0",
     "aws-sdk": "^2.702.0",
+    "axios": "^0.19.2",
     "babel-jest": "^26.0.1",
     "bluebird": "^3.7.2",
     "jest": "^26.0.1",
