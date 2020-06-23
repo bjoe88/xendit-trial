@@ -7,11 +7,18 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-  environment: ${file(./config.json):${opt:stage, self:provider.stage, 'dev'}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "*"
 
 functions:
   create-notification-type:
-    handler: handler.createNotificationType
+    handler: src/controller/notification.createNotificationType
     memorySize: 
     description: Create notification types.
     events:
@@ -24,7 +31,7 @@ resources: # CloudFormation template syntax from here on.
     notificationsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${env:notificationTable}
+        TableName: notification-table
         AttributeDefinitions:
           - AttributeName: pk
             AttributeType: S
