@@ -18,7 +18,7 @@
     "babel-jest": "^26.0.1",
     "bluebird": "^3.7.2",
     "jest": "^26.0.1",
-    "serverless": "^1.73.1",
+    "serverless": "^3.27.0",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.9.5",
     "uuid": "^8.1.0"
